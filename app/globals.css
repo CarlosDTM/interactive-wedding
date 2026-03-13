@@ -1,26 +1,76 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+@import '../node_modules/tw-animate-css/dist/tw-animate.css';
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Palette */
+  --grasslands:   #5F5A20; /* dark olive */
+  --bluebell:     #A1A8BE; /* muted blue-gray */
+  --sweet-cream:  #F3D0C3; /* warm cream */
+  --lilac:        #EDBEE4; /* soft lilac */
+  --terra-cotta:  #EA785B; /* warm orange-red */
+  --grape-fizz:   #5F0013; /* deep burgundy */
+
+  /* Semantic tokens mapped to palette */
+  --background:         var(--sweet-cream);
+  --foreground:         var(--grasslands);
+  --card:               #faf4f1;
+  --card-foreground:    var(--grasslands);
+  --primary:            var(--terra-cotta);
+  --primary-foreground: #faf4f1;
+  --secondary:          var(--bluebell);
+  --secondary-foreground: var(--grasslands);
+  --muted:              var(--lilac);
+  --muted-foreground:   var(--grasslands);
+  --accent:             var(--lilac);
+  --accent-foreground:  var(--grape-fizz);
+  --destructive:        var(--terra-cotta);
+  --border:             var(--bluebell);
+  --input:              var(--bluebell);
+  --ring:               var(--lilac);
+  --radius:             0.625rem;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-montserrat), sans-serif;
+  --font-serif: var(--font-gwendolyn), cursive;
+
+  /* Palette tokens available as Tailwind utilities */
+  --color-grasslands:  var(--grasslands);
+  --color-bluebell:    var(--bluebell);
+  --color-sweet-cream: var(--sweet-cream);
+  --color-lilac:       var(--lilac);
+  --color-terra-cotta: var(--terra-cotta);
+  --color-grape-fizz:  var(--grape-fizz);
+
+  /* Semantic tokens */
+  --color-background:         var(--background);
+  --color-foreground:         var(--foreground);
+  --color-card:               var(--card);
+  --color-card-foreground:    var(--card-foreground);
+  --color-primary:            var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary:          var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted:              var(--muted);
+  --color-muted-foreground:   var(--muted-foreground);
+  --color-accent:             var(--accent);
+  --color-accent-foreground:  var(--accent-foreground);
+  --color-destructive:        var(--destructive);
+  --color-border:             var(--border);
+  --color-input:              var(--input);
+  --color-ring:               var(--ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    @apply bg-background text-foreground;
+  }
 }
