@@ -1,6 +1,29 @@
 import { Gwendolyn, Montserrat } from 'next/font/google';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import 'remixicon/fonts/remixicon.css';
+
+export const metadata: Metadata = {
+  title: 'Carlos & Alexia',
+  icons: {
+    icon: '/ring_icon.png',
+    apple: '/ring_icon.png',
+  },
+  openGraph: {
+    title: 'Carlos & Alexia',
+    images: [],
+  },
+  twitter: {
+    card: 'summary',
+    images: [],
+  },
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+};
 
 const gwendolyn = Gwendolyn({ 
   weight: ['400', '700'],

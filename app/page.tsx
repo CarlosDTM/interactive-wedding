@@ -115,7 +115,7 @@ export default function WeddingPage() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-[100dvh]">
       {/* Top palette stripe bar — horizontal */}
       <div className="flex w-full" style={{ height: "10px" }}>
         <div className="flex-1" style={{ backgroundColor: "var(--grasslands)" }} />
@@ -127,13 +127,13 @@ export default function WeddingPage() {
 
       {/* Hero Section */}
       <section 
-        className="relative min-h-screen flex flex-col"
+        className="relative min-h-[95vh] md:min-h-[100dvh] flex flex-col"
         style={{ backgroundColor: "#F3DDC3" }}
       >
 
 
         {/* Navigation */}
-        <nav className="relative z-20 flex items-center justify-between px-4 md:px-8 py-4">
+        <nav className="relative z-20 flex items-center justify-between px-4 md:px-8 py-4" style={{ paddingTop: 'max(env(safe-area-inset-top), 1rem)' }}>
           <motion.button
             className="flex items-center gap-2 font-medium tracking-wide hover:opacity-70 transition-opacity text-[length:var(--font-size-nav-btn)] md:text-[length:var(--font-size-nav-btn-desktop)]"
             style={{ color: "#5F5A20" }}
@@ -184,7 +184,7 @@ export default function WeddingPage() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               className="fixed inset-0 z-30 flex items-center justify-center backdrop-blur-sm md:hidden"
-              style={{ backgroundColor: "rgba(243, 221, 195, 0.95)" }}
+              style={{ backgroundColor: "rgba(243, 221, 195, 0.95)", paddingTop: 'env(safe-area-inset-top)', paddingBottom: 'env(safe-area-inset-bottom)' }}
             >
               <motion.div
                 initial={{ scale: 0.9, opacity: 0 }}
@@ -394,7 +394,7 @@ export default function WeddingPage() {
       {/* Footer */}
       <footer
         className="py-8 md:py-12"
-        style={{ backgroundColor: "#F3DDC3" }}
+        style={{ backgroundColor: "#F3DDC3", paddingBottom: 'max(env(safe-area-inset-bottom), 2rem)' }}
       >
         <div className="text-center">
           <h3 className="font-serif font-bold text-4xl md:text-5xl" style={{ color: "var(--grasslands)" }}>

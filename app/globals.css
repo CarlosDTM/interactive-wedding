@@ -84,8 +84,22 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    -webkit-tap-highlight-color: transparent;
+  }
+  html {
+    /* Prevent Safari elastic overscroll from showing white flash */
+    background-color: #F3DDC3;
+    /* Smooth scrolling everywhere */
+    scroll-behavior: smooth;
   }
   body {
     @apply bg-background text-foreground;
+    /* Smooth momentum scrolling on iOS */
+    -webkit-overflow-scrolling: touch;
+    /* Prevent text size adjustment on orientation change */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* Prevent double-tap zoom on interactive elements */
+    touch-action: manipulation;
   }
 }
