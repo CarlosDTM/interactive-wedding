@@ -115,7 +115,7 @@ export default function WeddingPage() {
   }
 
   return (
-    <div className="min-h-[100dvh]">
+    <div>
       {/* Top palette stripe bar — horizontal */}
       <div className="flex w-full" style={{ height: "10px" }}>
         <div className="flex-1" style={{ backgroundColor: "var(--grasslands)" }} />
@@ -127,8 +127,8 @@ export default function WeddingPage() {
 
       {/* Hero Section */}
       <section 
-        className="relative min-h-[95vh] md:min-h-[100dvh] flex flex-col"
-        style={{ backgroundColor: "#F3DDC3" }}
+        className="relative flex flex-col"
+        style={{ backgroundColor: "#F3DDC3", minHeight: 'var(--hero-min-height)' }}
       >
 
 

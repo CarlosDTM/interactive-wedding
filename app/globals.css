@@ -10,6 +10,9 @@
   --terra-cotta:  #EA785B; /* warm orange-red */
   --grape-fizz:   #5F0013; /* deep burgundy */
 
+  /* Hero height: 90svh on mobile (svh = visible area with browser bars shown), 100dvh on desktop */
+  --hero-min-height: 95svh;
+
   /* Semantic tokens mapped to palette */
   --background:         var(--sweet-cream);
   --foreground:         var(--grasslands);
@@ -43,6 +46,12 @@
   --font-size-couple-names:    clamp(4.5rem, 20vw, 9rem); /* fluid 72–144 px */
   --font-size-countdown:       clamp(2rem, 8vw, 3.5rem);  /* fluid 32–56 px */
   --font-size-section-title:   clamp(3rem, 8vw, 5rem);    /* fluid 48–80 px – section headings */
+}
+
+@media (min-width: 768px) {
+  :root {
+    --hero-min-height: 100dvh;
+  }
 }
 
 @theme inline {
