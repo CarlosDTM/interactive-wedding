@@ -28,6 +28,21 @@
   --input:              var(--bluebell);
   --ring:               var(--lilac);
   --radius:             0.625rem;
+
+  /* ── UI Font-size tokens ─────────────────────────────────────
+     Saved here so every component can reference the same scale.
+     --font-size-nav-btn       → Sign In · More · View More (mobile)
+     --font-size-nav-btn-desktop → Sign In · More · View More (desktop)
+     --font-size-couple-names  → Carlos & Alexia headline
+     --font-size-countdown     → Countdown number units
+     --font-size-section-title  → Section headings (e.g. "Our Story")
+  ────────────────────────────────────────────────────────── */
+  --font-size-nav-btn:         1.20rem;                    /* ~21 px – mobile */
+  --font-size-nav-btn-desktop: 0.975rem;                   /* ~16 px – desktop */
+  --font-size-nav-options:     0.875rem;                     /* 11 px  – uppercase pill options */
+  --font-size-couple-names:    clamp(4.5rem, 20vw, 9rem); /* fluid 72–144 px */
+  --font-size-countdown:       clamp(2rem, 8vw, 3.5rem);  /* fluid 32–56 px */
+  --font-size-section-title:   clamp(3rem, 8vw, 5rem);    /* fluid 48–80 px – section headings */
 }
 
 @theme inline {

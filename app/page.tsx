@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence, type Variants } from "framer-motion"
 import Image from "next/image"
 import { ChevronDown } from "lucide-react"
 
@@ -9,10 +9,10 @@ import { ChevronDown } from "lucide-react"
 const WEDDING_DATE = new Date("2026-06-15T16:00:00")
 
 const navItems = [
-  { label: "RSVP", color: "#3F0013" },
-  { label: "GIFTS", color: "#EA785B" },
-  { label: "TRIVIA", color: "#ED8EE4" },
-  { label: "GALLERY", color: "#A1A8BE" },
+  { label: "RSVP",    color: "#3F0013", icon: "ri-heart-line" },
+  { label: "GIFTS",   color: "#EA785B", icon: "ri-gift-line" },
+  { label: "TRIVIA",  color: "#ED8EE4", icon: "ri-question-line" },
+  { label: "GALLERY", color: "#A1A8BE", icon: "ri-image-line" },
 ]
 
 const stories = [
@@ -39,7 +39,7 @@ const stories = [
 ]
 
 function useCountdown(targetDate: Date) {
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, mins: 0 })
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, mins: 0, secs: 0 })
 
   useEffect(() => {
     const calculateTime = () => {
@@ -51,16 +51,50 @@ function useCountdown(targetDate: Date) {
           days: Math.floor(distance / (1000 * 60 * 60 * 24)),
           hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
           mins: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+          secs: Math.floor((distance % (1000 * 60)) / 1000),
         })
       }
     }
 
     calculateTime()
-    const interval = setInterval(calculateTime, 60000)
+    const interval = setInterval(calculateTime, 1000)
     return () => clearInterval(interval)
   }, [targetDate])
 
   return timeLeft
+}
+
+// ── Animation variants ───────────────────────────────────────────────────────
+const navVariants: Variants = {
+  hidden: { opacity: 0, y: -28 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+}
+
+const lineVariants: Variants = {
+  hidden: {},
+  visible: (delayChildren: number) => ({
+    transition: { staggerChildren: 0.08, delayChildren },
+  }),
+}
+
+const charVariants: Variants = {
+  hidden: { opacity: 0, y: 10, filter: "blur(2px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.5, ease: "easeOut" },
+  },
+}
+
+const countdownContainerVariants: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.12, delayChildren: 1.9 } },
+}
+
+const countdownUnitVariants: Variants = {
+  hidden: { opacity: 0, y: 18 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
 }
 
 export default function WeddingPage() {
@@ -82,6 +116,15 @@ export default function WeddingPage() {
 
   return (
     <div className="min-h-screen">
+      {/* Top palette stripe bar — horizontal */}
+      <div className="flex w-full" style={{ height: "10px" }}>
+        <div className="flex-1" style={{ backgroundColor: "var(--grasslands)" }} />
+        <div className="flex-1" style={{ backgroundColor: "var(--terra-cotta)" }} />
+        <div className="flex-1" style={{ backgroundColor: "var(--sweet-cream)" }} />
+        <div className="flex-1" style={{ backgroundColor: "var(--lilac)" }} />
+        <div className="flex-1" style={{ backgroundColor: "var(--bluebell)" }} />
+      </div>
+
       {/* Hero Section */}
       <section 
         className="relative min-h-screen flex flex-col"
@@ -91,34 +134,46 @@ export default function WeddingPage() {
 
         {/* Navigation */}
         <nav className="relative z-20 flex items-center justify-between px-4 md:px-8 py-4">
-          <button 
-            className="text-xs md:text-sm tracking-wide hover:opacity-70 transition-opacity"
-            style={{ color: "#5F5420" }}
+          <motion.button
+            className="flex items-center gap-2 font-medium tracking-wide hover:opacity-70 transition-opacity text-[length:var(--font-size-nav-btn)] md:text-[length:var(--font-size-nav-btn-desktop)]"
+            style={{ color: "#5F5A20" }}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0 }}
           >
+            <i className="ri-user-3-line" />
             Sign In
-          </button>
+          </motion.button>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-2">
-            {navItems.map((item) => (
-              <button
+            {navItems.map((item, index) => (
+              <motion.button
                 key={item.label}
-                className="px-4 py-2 rounded-full text-white text-xs font-medium tracking-wider hover:opacity-90 transition-opacity"
-                style={{ backgroundColor: item.color }}
+                className="flex items-center gap-1.5 px-4 py-2 rounded-full text-white font-medium tracking-wider hover:opacity-90 transition-opacity"
+                style={{ backgroundColor: item.color, fontSize: "var(--font-size-nav-options)" }}
+                initial={{ opacity: 0, y: -16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 + index * 0.1 }}
               >
+                <i className={item.icon} />
                 {item.label}
-              </button>
+              </motion.button>
             ))}
           </div>
 
           {/* Mobile Menu Button - Pill style */}
-          <button
-            className="md:hidden px-4 py-2 rounded-full text-white text-xs tracking-wide hover:opacity-90 transition-opacity"
-            style={{ backgroundColor: "#5F5420" }}
+          <motion.button
+            className="md:hidden flex items-center gap-2 px-4 py-1.5 rounded-full text-white font-medium tracking-wide hover:opacity-90 transition-opacity text-[length:var(--font-size-nav-btn)]"
+            style={{ backgroundColor: "#5F5A20" }}
             onClick={() => setMenuOpen(!menuOpen)}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
           >
+            <i className={menuOpen ? "ri-close-line" : "ri-apps-2-line"} />
             {menuOpen ? "Close" : "More"}
-          </button>
+          </motion.button>
         </nav>
 
         {/* Mobile Menu Overlay */}
@@ -135,7 +190,7 @@ export default function WeddingPage() {
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}
-                className="flex flex-col gap-4"
+                className="flex flex-col gap-4 items-center"
               >
                 {navItems.map((item, index) => (
                   <motion.button
@@ -143,19 +198,21 @@ export default function WeddingPage() {
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: index * 0.1 }}
-                    className="px-12 py-4 rounded-full text-white text-lg font-medium tracking-wider"
-                    style={{ backgroundColor: item.color }}
+                    className="flex items-center gap-3 px-8 py-4 rounded-full text-white font-medium tracking-wider hover:opacity-90 transition-opacity w-fit"
+                    style={{ backgroundColor: item.color, fontSize: "var(--font-size-nav-btn)" }}
                     onClick={() => setMenuOpen(false)}
                   >
+                    <i className={`${item.icon} text-xl`} />
                     {item.label}
                   </motion.button>
                 ))}
               </motion.div>
               <button
-                className="absolute top-4 right-4 text-sm tracking-wide"
-                style={{ color: "#5F5420" }}
+                className="absolute top-4 right-4 flex items-center gap-1.5 px-4 py-1.5 rounded-full font-medium tracking-wide text-white hover:opacity-90 transition-opacity"
+                style={{ backgroundColor: "#5F5A20", fontSize: "var(--font-size-nav-btn)" }}
                 onClick={() => setMenuOpen(false)}
               >
+                <i className="ri-close-line" />
                 Close
               </button>
             </motion.div>
@@ -163,62 +220,115 @@ export default function WeddingPage() {
         </AnimatePresence>
 
         {/* Hero Content */}
-        <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-4">
-          {/* Names - stacked on mobile for bigger text */}
-          <h1 
-            className="font-serif text-5xl md:text-6xl lg:text-7xl text-center"
-            style={{ color: "#EA785B" }}
+        <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 pb-8 pt-16 md:pt-0">
+          {/* Names - character-by-character write-in animation */}
+          <motion.h1
+            className="font-serif font-bold text-center leading-none mt-8"
+            style={{ color: "var(--grasslands)", fontSize: "var(--font-size-couple-names)" }}
+            initial="hidden"
+            animate="visible"
+            variants={lineVariants}
+            custom={0.3}
           >
-            Carlos &
-          </h1>
-          <h1 
-            className="font-serif text-5xl md:text-6xl lg:text-7xl text-center"
-            style={{ color: "#EA785B" }}
+            {"Carlos &".split("").map((char, i) => (
+              <motion.span key={i} variants={charVariants} style={{ display: "inline-block", whiteSpace: char === " " ? "pre" : "normal" }}>
+                {char}
+              </motion.span>
+            ))}
+          </motion.h1>
+          <motion.h1
+            className="font-serif font-bold text-center leading-none"
+            style={{ color: "var(--grasslands)", fontSize: "var(--font-size-couple-names)" }}
+            initial="hidden"
+            animate="visible"
+            variants={lineVariants}
+            custom={1.1}
           >
-            Alexia
-          </h1>
+            {"Alexia".split("").map((char, i) => (
+              <motion.span key={i} variants={charVariants} style={{ display: "inline-block" }}>
+                {char}
+              </motion.span>
+            ))}
+          </motion.h1>
 
-          {/* Countdown - Smaller and below names */}
-          <div 
-            className="mt-4 flex items-center gap-3 text-center"
-            style={{ color: "#5F5420" }}
+          {/* Countdown - Below names */}
+          <motion.div
+            className="mt-12 flex items-end gap-2 justify-center"
+            initial="hidden"
+            animate="visible"
+            variants={countdownContainerVariants}
           >
-            <span className="text-sm">-</span>
-            <div className="flex items-baseline gap-1">
-              <span className="text-lg md:text-xl font-medium">{timeLeft.days}</span>
-              <span className="text-xs uppercase tracking-wider">d</span>
-            </div>
-            <span className="text-sm">:</span>
-            <div className="flex items-baseline gap-1">
-              <span className="text-lg md:text-xl font-medium">{timeLeft.hours}</span>
-              <span className="text-xs uppercase tracking-wider">h</span>
-            </div>
-            <span className="text-sm">:</span>
-            <div className="flex items-baseline gap-1">
-              <span className="text-lg md:text-xl font-medium">{timeLeft.mins}</span>
-              <span className="text-xs uppercase tracking-wider">m</span>
-            </div>
-            <span className="text-sm">-</span>
-          </div>
+            {[
+              { value: timeLeft.days,  label: "days" },
+              { value: timeLeft.hours, label: "hrs" },
+              { value: timeLeft.mins,  label: "min" },
+              { value: timeLeft.secs,  label: "sec" },
+            ].map(({ value, label }, i) => (
+              <motion.div key={i} className="flex items-end gap-2" variants={countdownUnitVariants}>
+                <div className="flex flex-col items-center gap-0.5">
+                  <span
+                    className="font-medium tabular-nums leading-none pb-1"
+                    style={{
+                      fontSize: "var(--font-size-countdown)",
+                      color: "var(--grasslands)",
+                      borderBottom: "2px solid var(--terra-cotta)",
+                    }}
+                  >
+                    {String(value).padStart(2, "0")}
+                  </span>
+                  <span className="text-[0.75rem] uppercase tracking-widest font-medium" style={{ color: "var(--terra-cotta)" }}>
+                    {label}
+                  </span>
+                </div>
+                {i < 3 && (
+                  <span
+                    className="font-medium leading-none mb-5"
+                    style={{ fontSize: "var(--font-size-countdown)", color: "var(--terra-cotta)" }}
+                  >
+                    :
+                  </span>
+                )}
+              </motion.div>
+            ))}
+          </motion.div>
 
           {/* View More Button */}
-          <button
+          <motion.button
             onClick={scrollToFirstStory}
-            className="mt-6 px-8 py-3 rounded-full text-white text-sm tracking-wider hover:opacity-90 transition-all flex items-center gap-2"
-            style={{ backgroundColor: "#EA785B" }}
+            className="mt-8 flex items-center gap-2 px-6 py-2 rounded-full font-medium tracking-wide hover:opacity-90 transition-all text-[length:var(--font-size-nav-btn)] md:text-[length:var(--font-size-nav-btn-desktop)]"
+            style={{ backgroundColor: "var(--grasslands)", color: "#faf4f1" }}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: "easeInOut", delay: 2.4 }}
           >
             View More
-            <ChevronDown className="w-4 h-4" />
-          </button>
+            <ChevronDown className="w-5 h-5" />
+          </motion.button>
         </div>
+
+        {/* Floral divider */}
+        <motion.div
+          className="w-full overflow-visible md:hidden"
+          style={{ marginBottom: "-19px" }}
+          initial={{ opacity: 0, y: 60 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.1, ease: "easeOut", delay: 2.8 }}
+        >
+          <img
+            src="/row_of_flowers.png"
+            alt=""
+            className="w-full"
+            style={{ display: "block" }}
+          />
+        </motion.div>
       </section>
 
       {/* Story Feed Section */}
-      <section className="bg-white py-12 md:py-16">
+      <section className="py-10 md:py-12" style={{ backgroundColor: "var(--grasslands)" }}>
         <div className="max-w-5xl mx-auto px-4 md:px-8">
-          <h2 
-            className="font-serif text-3xl md:text-4xl text-center mb-10"
-            style={{ color: "#EA785B" }}
+          <h2
+            className="font-sans font-bold text-center mb-10 tracking-wide"
+            style={{ color: "var(--sweet-cream)", fontSize: "var(--font-size-section-title)" }}
           >
             Our Story
           </h2>
@@ -233,7 +343,7 @@ export default function WeddingPage() {
                 }}
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, margin: "-100px" }}
+                viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
                 className={`flex flex-col ${
                   index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
@@ -241,7 +351,10 @@ export default function WeddingPage() {
               >
                 {/* Image */}
                 <div className="w-full md:w-2/5">
-                  <div className="aspect-[3/4] relative overflow-hidden rounded-lg shadow-lg">
+                  <div
+                    className="aspect-[3/4] relative overflow-hidden rounded-lg"
+                    style={{ border: "3px solid var(--sweet-cream)" }}
+                  >
                     <Image
                       src={story.image}
                       alt={`Our story - chapter ${story.id}`}
@@ -255,17 +368,17 @@ export default function WeddingPage() {
                 <div className="w-full md:w-1/2 flex flex-col">
                   <p 
                     className="text-base md:text-lg leading-relaxed"
-                    style={{ color: "#5F5420" }}
+                    style={{ color: "var(--sweet-cream)" }}
                   >
                     {story.text}
                   </p>
                   
-                  {/* Next Story Button - Pill with border */}
+                  {/* Next Story Button */}
                   {index < stories.length - 1 && (
                     <button
                       onClick={() => scrollToNextStory(index)}
-                      className="mt-4 self-start px-6 py-2 rounded-full border-2 text-sm tracking-wider hover:bg-[#5F5420] hover:text-white transition-all flex items-center gap-2"
-                      style={{ borderColor: "#5F5420", color: "#5F5420" }}
+                      className="mt-6 self-start flex items-center gap-2 px-6 py-2 rounded-full font-medium tracking-wider transition-all hover:opacity-80"
+                      style={{ backgroundColor: "var(--sweet-cream)", color: "var(--grasslands)", fontSize: "var(--font-size-nav-btn-desktop)" }}
                     >
                       Next Story
                       <ChevronDown className="w-4 h-4" />
@@ -279,12 +392,12 @@ export default function WeddingPage() {
       </section>
 
       {/* Footer */}
-      <footer 
-        className="py-6 md:py-8"
-        style={{ backgroundColor: "#EA785B" }}
+      <footer
+        className="py-8 md:py-12"
+        style={{ backgroundColor: "#F3DDC3" }}
       >
         <div className="text-center">
-          <h3 className="font-serif text-white text-2xl md:text-3xl">
+          <h3 className="font-serif font-bold text-4xl md:text-5xl" style={{ color: "var(--grasslands)" }}>
             Carlos & Alexia
           </h3>
         </div>

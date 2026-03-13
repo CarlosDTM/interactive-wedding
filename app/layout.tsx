@@ -1,13 +1,15 @@
 import { Gwendolyn, Montserrat } from 'next/font/google';
 import './globals.css';
+import 'remixicon/fonts/remixicon.css';
 
 const gwendolyn = Gwendolyn({ 
-  weight: ['400'], 
+  weight: ['400', '700'],
   subsets: ['latin'], 
   variable: '--font-gwendolyn' 
 });
 
 const montserrat = Montserrat({ 
+  weight: ['400', '500', '600', '700'],
   subsets: ['latin'], 
   variable: '--font-montserrat' 
 });
