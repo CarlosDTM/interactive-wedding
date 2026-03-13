@@ -1,4 +1,4 @@
-import { Gwendolyn, Montserrat } from 'next/font/google';
+import { Gwendolyn, Cinzel } from 'next/font/google';
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import 'remixicon/fonts/remixicon.css';
@@ -31,16 +31,16 @@ const gwendolyn = Gwendolyn({
   variable: '--font-gwendolyn' 
 });
 
-const montserrat = Montserrat({ 
-  weight: ['400', '500', '600', '700'],
+const cinzel = Cinzel({ 
+  weight: ['400', '500', '600', '700', '800', '900'],
   subsets: ['latin'], 
-  variable: '--font-montserrat' 
+  variable: '--font-cinzel' 
 });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${gwendolyn.variable} ${montserrat.variable}`}>
-      <body className="font-montserrat bg-[#F3DDC3] text-[#5F5420] antialiased">
+    <html lang="en" className={`${gwendolyn.variable} ${cinzel.variable}`}>
+      <body className="bg-[#F3DDC3] text-[#5F5420] antialiased">
         {children}
       </body>
     </html>

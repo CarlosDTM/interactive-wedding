@@ -55,7 +55,7 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-montserrat), sans-serif;
+  --font-sans: var(--font-cinzel), sans-serif;
   --font-serif: var(--font-gwendolyn), cursive;
 
   /* Palette tokens available as Tailwind utilities */
@@ -103,6 +103,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-cinzel), serif;
     /* Smooth momentum scrolling on iOS */
     -webkit-overflow-scrolling: touch;
     /* Prevent text size adjustment on orientation change */

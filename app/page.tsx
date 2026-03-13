@@ -127,7 +127,7 @@ export default function WeddingPage() {
 
       {/* Hero Section */}
       <section 
-        className="relative flex flex-col"
+        className="relative flex flex-col overflow-hidden"
         style={{ backgroundColor: "#F3DDC3", minHeight: 'var(--hero-min-height)' }}
       >
 
@@ -308,10 +308,10 @@ export default function WeddingPage() {
 
         {/* Floral divider */}
         <motion.div
-          className="w-full overflow-visible md:hidden"
-          style={{ marginBottom: "-19px" }}
-          initial={{ opacity: 0, y: 60 }}
-          animate={{ opacity: 1, y: 0 }}
+          className="absolute bottom-0 left-0 right-0 w-full md:hidden"
+          style={{ pointerEvents: "none" }}
+          initial={{ y: "100%" }}
+          animate={{ y: "10%" }}
           transition={{ duration: 1.1, ease: "easeOut", delay: 2.8 }}
         >
           <img
